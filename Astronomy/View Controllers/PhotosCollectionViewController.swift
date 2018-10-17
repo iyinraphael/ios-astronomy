@@ -63,11 +63,21 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     // MARK: - Private
     
     private func loadImage(forCell cell: ImageCollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        // let photoReference = photoReferences[indexPath.item]
+        let photoReference = photoReferences[indexPath.item]
         
         // TODO: Implement image loading here
+        let url = photoReference.imageURL.usingHTTPS
+        if let image = cache.cacheDict[photoReference.id] {
+            cell.imageView.image = image
+        }
+        let fetchImage = photoFetchQueue()
+        
+        
+        
+    
+    
     }
+    
     
     // Properties
     
@@ -75,7 +85,7 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
     
     private var roverInfo: MarsRover? {
         didSet {
-            solDescription = roverInfo?.solDescriptions[3]
+            solDescription = roverInfo?.solDescriptions[105]
         }
     }
     private var solDescription: SolDescription? {
@@ -95,5 +105,7 @@ class PhotosCollectionViewController: UIViewController, UICollectionViewDataSour
         }
     }
     
+    var photoFetchQueue = OperationQueue()
+    var cache: Cache<Int, UIImage> = Cache()
     @IBOutlet var collectionView: UICollectionView!
 }
